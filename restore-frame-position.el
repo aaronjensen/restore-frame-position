@@ -43,7 +43,7 @@
 
 (defun restore-frame-position-save ()
   "Save the current frame's size and position to `restore-frame-position-file'."
-  (when (display-graphic-p)
+  (when (window-system)
     (let* ((frame-size (alist-get 'outer-size (frame-geometry (selected-frame))))
            (frame-geometry-left (frame-parameter (selected-frame) 'left))
            (frame-geometry-top (frame-parameter (selected-frame) 'top))
