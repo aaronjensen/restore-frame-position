@@ -41,23 +41,20 @@
   :type 'file
   :group 'frames)
 
+(defun restore-frame-position--number-or-zero (maybe-number)
+  "Return 0 if MAYBE-NUMBER is a non-number."
+  (if (number-or-marker-p maybe-number)
+      maybe-number
+    0))
+
 (defun restore-frame-position-save ()
   "Save the current frame's size and position to `restore-frame-position-file'."
   (when (window-system)
     (let* ((frame-size (alist-get 'outer-size (frame-geometry (selected-frame))))
-           (frame-geometry-left (frame-parameter (selected-frame) 'left))
-           (frame-geometry-top (frame-parameter (selected-frame) 'top))
-           (frame-geometry-width (car frame-size))
-           (frame-geometry-height (cdr frame-size)))
-
-      (when (not (number-or-marker-p frame-geometry-left))
-        (setq frame-geometry-left 0))
-      (when (not (number-or-marker-p frame-geometry-top))
-        (setq frame-geometry-top 0))
-      (when (not (number-or-marker-p frame-geometry-width))
-        (setq frame-geometry-width 0))
-      (when (not (number-or-marker-p frame-geometry-height))
-        (setq frame-geometry-height 0))
+           (frame-geometry-left (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'left)))
+           (frame-geometry-top (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'top)))
+           (frame-geometry-width (restore-frame-position--number-or-zero (car frame-size)))
+           (frame-geometry-height (restore-frame-position--number-or-zero (cdr frame-size))))
 
       (with-temp-buffer
         (insert
