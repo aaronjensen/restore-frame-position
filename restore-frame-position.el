@@ -62,7 +62,7 @@
       (with-temp-buffer
         (insert
          ";;; This is the previous Emacs frame's geometry.\n"
-         ";;; Last generated " (current-time-string) ".\n"
+         ";;; Last generated " (current-time-string) " by `restore-frame-position'.\n"
          (format "(add-to-list 'initial-frame-alist '(top . %d))\n" (max frame-geometry-top 0))
          (format "(add-to-list 'initial-frame-alist '(left . %d))\n" (max frame-geometry-left 0))
          ;; For some reason, we're about 20x4px off, so adjust
