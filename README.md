@@ -1,4 +1,4 @@
-# remember-frame-position
+# restore-frame-position
 
 Remember and restore initial frame position when restarting Emacs.
 
@@ -7,7 +7,7 @@ Remember and restore initial frame position when restarting Emacs.
 You can install this package from [Melpa][]
 
 ```
-M-x package-install RET remember-frame-position RET
+M-x package-install RET restore-frame-position RET
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ M-x package-install RET remember-frame-position RET
 Add to your `init.el`:
 
 ```elisp
-(remember-frame-position)
+(restore-frame-position)
 ```
 
 [Melpa]: http://melpa.milkbox.net/

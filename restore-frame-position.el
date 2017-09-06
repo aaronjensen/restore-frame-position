@@ -1,9 +1,9 @@
-;;; remember-frame-position.el --- remember and restore initial frame position
+;;; restore-frame-position.el --- remember and restore initial frame position
 
 ;; Copyright (C) 2017 by Aaron Jensen
 
 ;; Author: Aaron Jensen <aaronjensen@gmail.com>
-;; URL: https://github.com/aaronjensen/remember-frame-position
+;; URL: https://github.com/aaronjensen/restore-frame-position
 ;; Version: 1.0.0
 ;; Package-Requires: ((emacs "25"))
 
@@ -12,7 +12,7 @@
 ;; This package remembers and restores the position of the initial frame. To use
 ;; it, add this to your `init.el':
 
-;;    (remember-frame-position)
+;;    (restore-frame-position)
 
 ;;; License:
 
@@ -35,14 +35,14 @@
 ;; Boston, MA 02110-1301, USA.
 
 ;;; Code:
-(defcustom remember-frame-position-file
+(defcustom restore-frame-position-file
   (expand-file-name "frame-position.el" user-emacs-directory)
   "The file to store the frame position to."
   :type 'file
   :group 'frames)
 
-(defun remember-frame-position-save ()
-  "Save the current frame's size and position to `remember-frame-position-file'."
+(defun restore-frame-position-save ()
+  "Save the current frame's size and position to `restore-frame-position-file'."
   (when (display-graphic-p)
     (let* ((frame-size (alist-get 'outer-size (frame-geometry (selected-frame))))
            (frame-geometry-left (frame-parameter (selected-frame) 'left))
@@ -68,19 +68,21 @@
          ;; For some reason, we're about 20x4px off, so adjust
          (format "(add-to-list 'initial-frame-alist '(width . (text-pixels . %d)))\n" (max (- frame-geometry-width 20) 0))
          (format "(add-to-list 'initial-frame-alist '(height . (text-pixels . %d)))\n" (max (- frame-geometry-height 4) 0)))
-        (when (file-writable-p remember-frame-position-file)
-          (write-file remember-frame-position-file))))))
+        (when (file-writable-p restore-frame-position-file)
+          (write-file restore-frame-position-file))))))
 
-(defun remember-frame-position-load ()
-  "Load the current frame's size and position from `remember-frame-position-file'."
-  (when (file-readable-p remember-frame-position-file)
-    (load-file remember-frame-position-file)))
+(defun restore-frame-position-load ()
+  "Load the current frame's size and position from `restore-frame-position-file'."
+  (when (file-readable-p restore-frame-position-file)
+    (load-file restore-frame-position-file)))
 
 ;;;###autoload
-(defun remember-frame-position ()
+(defun restore-frame-position ()
   "Install hooks to remember and restore initial frame poosition."
-  (add-hook 'after-init-hook 'remember-frame-position-load)
-  (add-hook 'kill-emacs-hook 'remember-frame-position-save))
+  (if after-init-time
+      (restore-frame-position-load)
+    (add-hook 'after-init-hook 'restore-frame-position-load))
+  (add-hook 'kill-emacs-hook 'restore-frame-position-save))
 
-(provide 'remember-frame-position)
-;;; remember-frame-position.el ends here
+(provide 'restore-frame-position)
+;;; restore-frame-position.el ends here
