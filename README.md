@@ -1,3 +1,16 @@
+**NOTE** This package is probably unnecessary. I was able to replicate this
+using the built-in `desktop-save-mode` and this config:
+
+```
+(setq desktop-globals-to-save '()
+      desktop-files-not-to-save ".*"
+      desktop-buffers-not-to-save ".*"
+      desktop-save t)
+(when (window-system)
+  (desktop-save-mode)
+  (desktop-read))
+```
+
 # restore-frame-position
 
 Remember and restore initial frame position when restarting Emacs.
