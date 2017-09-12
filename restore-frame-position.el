@@ -62,9 +62,8 @@
          ";;; Last generated " (current-time-string) " by `restore-frame-position'.\n"
          (format "(add-to-list 'initial-frame-alist '(top . %d))\n" (max frame-geometry-top 0))
          (format "(add-to-list 'initial-frame-alist '(left . %d))\n" (max frame-geometry-left 0))
-         ;; For some reason, we're about 20x4px off, so adjust
-         (format "(add-to-list 'initial-frame-alist '(width . (text-pixels . %d)))\n" (max (- frame-geometry-width 20) 0))
-         (format "(add-to-list 'initial-frame-alist '(height . (text-pixels . %d)))\n" (max (- frame-geometry-height 4) 0)))
+         (format "(add-to-list 'initial-frame-alist '(width . (text-pixels . %d)))\n" (max frame-geometry-width 0))
+         (format "(add-to-list 'initial-frame-alist '(height . (text-pixels . %d)))\n" (max frame-geometry-height 0)))
         (when (file-writable-p restore-frame-position-file)
           (write-file restore-frame-position-file))))))
 
