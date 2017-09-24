@@ -41,6 +41,13 @@
   :type 'file
   :group 'frames)
 
+(defcustom restore-frame-position-dimension-tweak
+  '(-20 . -4)
+  "Width and height to adjust the dimensions by before saving.
+For some reason, we can't actually get a pixel size that is
+usable to restore to the exact same size."
+  :group 'frames)
+
 (defun restore-frame-position--number-or-zero (maybe-number)
   "Return 0 if MAYBE-NUMBER is a non-number."
   (if (number-or-marker-p maybe-number)
@@ -53,8 +60,8 @@
     (let* ((frame-size (alist-get 'outer-size (frame-geometry (selected-frame))))
            (frame-geometry-left (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'left)))
            (frame-geometry-top (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'top)))
-           (frame-geometry-width (restore-frame-position--number-or-zero (car frame-size)))
-           (frame-geometry-height (restore-frame-position--number-or-zero (cdr frame-size))))
+           (frame-geometry-width (+ (restore-frame-position--number-or-zero (frame-pixel-width)) (car restore-frame-position-dimension-tweak)))
+           (frame-geometry-height (+ (restore-frame-position--number-or-zero (frame-pixel-height)) (cdr restore-frame-position-dimension-tweak))))
 
       (with-temp-buffer
         (insert
