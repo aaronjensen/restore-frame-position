@@ -42,10 +42,10 @@
   :group 'frames)
 
 (defcustom restore-frame-position-dimension-tweak
-  '(-20 . -4)
+  '(0 . 0)
   "Width and height to adjust the dimensions by before saving.
-For some reason, we can't actually get a pixel size that is
-usable to restore to the exact same size."
+I don't fully understand the way to calculate this and it seems
+there may be OS specific bugs."
   :group 'frames)
 
 (defun restore-frame-position--number-or-zero (maybe-number)
@@ -57,11 +57,10 @@ usable to restore to the exact same size."
 (defun restore-frame-position-save ()
   "Save the current frame's size and position to `restore-frame-position-file'."
   (when (window-system)
-    (let* ((frame-size (alist-get 'outer-size (frame-geometry (selected-frame))))
-           (frame-geometry-left (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'left)))
+    (let* ((frame-geometry-left (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'left)))
            (frame-geometry-top (restore-frame-position--number-or-zero (frame-parameter (selected-frame) 'top)))
-           (frame-geometry-width (+ (restore-frame-position--number-or-zero (frame-pixel-width)) (car restore-frame-position-dimension-tweak)))
-           (frame-geometry-height (+ (restore-frame-position--number-or-zero (frame-pixel-height)) (cdr restore-frame-position-dimension-tweak))))
+           (frame-geometry-width (+ (restore-frame-position--number-or-zero (frame-text-width)) (car restore-frame-position-dimension-tweak)))
+           (frame-geometry-height (+ (restore-frame-position--number-or-zero (frame-text-height)) (cdr restore-frame-position-dimension-tweak))))
 
       (with-temp-buffer
         (insert
